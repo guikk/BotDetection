@@ -17,7 +17,7 @@ public class RequestLogFileReader implements RequestReader {
         this.reader = new BufferedReader(new InputStreamReader(fstream));
     }
 
-    public Request read() throws IOException {
+    public Request read() throws Exception {
         String line = "";
         try {
             // ignore blank lines

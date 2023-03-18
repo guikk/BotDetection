@@ -1,9 +1,9 @@
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class Request {
     private String rawLog;
     private String clientIP;
+    private String identity;
     private String username;
     private String timestamp;
     private String requestLine;
@@ -13,37 +13,38 @@ public class Request {
     private String userAgent;
 
     // Regular expression patterns
-    private Pattern quotesPattern = Pattern.compile("\"([^\"]*)\""); // string in quotes
-    private Pattern bracketPattern = Pattern.compile("\\[(.*)\\]"); // string in brackets
+    private String quotesPattern = "\"([^\"]*)\""; // string in quotes
+    private String bracketPattern = "\\[([^\\]]*)\\]"; // string in brackets
 
-    public Request(String rawLogString) {
+    public Request(String rawLogString) throws Exception {
         this.rawLog = rawLogString;
 
-        Scanner scanner = new Scanner(this.rawLog);
-
-        this.clientIP = scanner.next();
-        System.out.println("IP: " + this.clientIP);
-        // discard identity of the user determined by identd
-        System.out.println("identity: " + scanner.next());
-        this.username = scanner.next();
-        System.out.println("username: " + this.username);
-        this.timestamp = scanner.next(bracketPattern);
-        System.out.println("time: " + this.timestamp);
-        this.requestLine = scanner.next(quotesPattern);
-        System.out.println("request: " + this.requestLine);
-        this.statusCode = scanner.nextInt();
-        System.out.println("status: " + this.statusCode);
-        this.responseSize = scanner.nextInt();
-        System.out.println("size: " + this.responseSize);
-        this.refererHeader = scanner.next(quotesPattern);
-        System.out.println("Referer: " + this.refererHeader);
-        this.userAgent = scanner.next(quotesPattern);
-        System.out.println("user agent: " + this.userAgent);
-
-        scanner.close();
+        try (Scanner scanner = new Scanner(this.rawLog)) {
+            this.clientIP = scanner.next();
+            this.identity = scanner.next();
+            this.username = scanner.next();
+            this.timestamp = scanner.findWithinHorizon(bracketPattern, 0);
+            this.requestLine = scanner.findWithinHorizon(quotesPattern, 0);
+            this.statusCode = scanner.nextInt();
+            this.responseSize = scanner.nextInt();
+            this.refererHeader = scanner.findWithinHorizon(quotesPattern, 0);
+            this.userAgent = scanner.findWithinHorizon(quotesPattern, 0);
+        } catch (Exception e) {
+            throw new Exception("Request: Wrong log string format, expected \"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"\", but received " + rawLogString);
+        }
     }
 
     public String toString() {
-        return "Host(" + this.clientIP + ")" + "Request(" + this.requestLine + ")";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Client IP: " + this.clientIP);
+        sb.append("\nIdentity: " + this.identity);
+        sb.append("\nUsername: " + this.username);
+        sb.append("\nTimestamp: " + this.timestamp);
+        sb.append("\nRequest: " + this.requestLine);
+        sb.append("\nStatus code: " + this.statusCode);
+        sb.append("\nResponse size: " + this.responseSize);
+        sb.append("\nReferer: " + this.refererHeader);
+        sb.append("\nUser-agent: " + this.userAgent);
+        return sb.toString();
     }
 } 
