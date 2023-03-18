@@ -1,9 +1,15 @@
-class BotDetector {
-    public static void main(String args[]) {
 
+
+public class BotDetector {
+    public static void main(String args[]) throws Exception {
+        try (RequestReader requestReader = new RequestLogFileReader("input_data/access.log")) {
+            while (true) {
+                BotDetector.detect(requestReader.read());
+            }
+        }
     }
 
-    void detect(String logString) {
-
+    static boolean detect(Request Request) {
+        return false;
     }
 }
