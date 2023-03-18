@@ -15,3 +15,6 @@
 - Set up pattern matching for the log string
 - Main program reading continuously from the interface
 - Makefile
+
+## Saturday - March 18th 2023
+- Debug log string tokenization
