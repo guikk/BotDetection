@@ -6,3 +6,12 @@
 - Read some of DataDome's blogs on bot detection
 - Download dataset
 - Start project structure
+
+## Thursday - March 16th 2023
+- Model Request stream reading interface
+- Implement interface for reading the log file
+
+## Friday - March 17th 2023
+- Set up pattern matching for the log string
+- Main program reading continuously from the interface
+- Makefile
