@@ -14,14 +14,16 @@
 ## Friday - March 17th 2023
 - Set up pattern matching for the log string
 - Main program reading continuously from the interface
-- Makefile
+- Set up Makefile
 
 ## Saturday - March 18th 2023
-- Debug log string tokenization
+- Debug log string marshall
 
 ## Sunday - March 19th 2023
 - Further look at detection strategies
 - Add blocklist
 - Track useful metrics for bot detection
-    - Look for open-source alternatives: Matomo, Countly
-
+    - ~~Look for open-source alternatives: Matomo, Countly, Plausible~~
+    - Metrics interface
+- Add log string rules, escape characters in quoted string unsolved
+- Wrap up documentation

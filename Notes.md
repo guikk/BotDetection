@@ -1,6 +1,6 @@
 # Strategies
 
-- Keep block/allow lists for bad/good bots by the public IP address used
+- Keep block/allow lists for bad/good bots by the public IP address used (Access Control Lists)
 - Take a closer look at analytics for signs:
     - higher than normal pageviews
     - abnormally high bounce rate
@@ -15,7 +15,7 @@
 
 # Insights
 
-Detecting and restricting bot traffict is important to identify and prevent many different security threats on the internet, but also to avoid losing precious bandwidth because of unwanted bot accesses to your website.
+Detecting and restricting bot traffic is important to identify and prevent many different security threats on the internet, but also to avoid losing precious bandwidth because of unwanted bot accesses to your website.
 
 Bot traffic is not always a bad thing, there are many bots that provide useful monitoring or analytics information for example. This is why completely blocking off bots from your system is not the best option.
 

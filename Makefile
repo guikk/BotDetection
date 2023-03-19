@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := help
 
 SRC_DIR := src/main/java
 OUT_DIR := target
@@ -19,3 +19,13 @@ todo:
 
 clean:
 	@rm $(OUT_DIR)/*.class
+
+help:
+	@echo "\
+Type 'make <command>' to run a command.\n\\n\
+downloadDataset		Download Apache's access log file (~1.7GB)\n\
+build			Compile Java sources\n\
+run			Launch main application\n\
+todo			Show to-do list (exit with 'q')\n\
+clean			Delete compiled files\n\
+help			Show command intructions\n"
