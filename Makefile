@@ -14,5 +14,8 @@ build:
 run:
 	java -cp $(OUT_DIR)/ BotDetector
 
+todo:
+	@git grep TODO $(SRC_DIR)/
+
 clean:
 	@rm $(OUT_DIR)/*.class
