@@ -18,3 +18,10 @@
 
 ## Saturday - March 18th 2023
 - Debug log string tokenization
+
+## Sunday - March 19th 2023
+- Further look at detection strategies
+- Add blocklist
+- Track useful metrics for bot detection
+    - Look for open-source alternatives: Matomo, Countly
+
