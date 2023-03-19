@@ -1,6 +1,14 @@
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Request {
+    // TODO: Valid/invalid unit tests to improve completeness
+        // Valid -> String in brackets
+        // Valid -> String in quotes (no escapes)
+        // Valid -> String in quotes (with escapes) <------- not currently covered
+        // Invalid
+    // TODO: Validate fields are also in format
+    // TODO: Exception handling to improve robustness (not crash due to bad format)
     private String rawLog;
     private String clientIP;
     private String identity;
@@ -12,13 +20,22 @@ public class Request {
     private String refererHeader;
     private String userAgent;
 
-    // Regular expression patterns
-    private String quotesPattern = "\"([^\"]*)\""; // string in quotes
-    private String bracketPattern = "\\[([^\\]]*)\\]"; // string in brackets
-
     public Request(String rawLogString) throws Exception {
         this.rawLog = rawLogString;
+        this.marshallRawLog();
+    }
 
+    
+        // Regular expressions
+        // TODO: Change quotes pattern to support escaped characters inside string
+        private Pattern quotesPattern = Pattern.compile("\"([^\"]*)\""); // string in quotes
+        private Pattern bracketPattern = Pattern.compile("\\[([^\\]]*)\\]"); // string in brackets
+    /**
+     * Reads the raw log string and assigns formatted data into the Request structure's fields
+     * @throws Exception
+     */
+    private void marshallRawLog() throws Exception {
+        
         try (Scanner scanner = new Scanner(this.rawLog)) {
             this.clientIP = scanner.next();
             this.identity = scanner.next();
@@ -26,25 +43,38 @@ public class Request {
             this.timestamp = scanner.findWithinHorizon(bracketPattern, 0);
             this.requestLine = scanner.findWithinHorizon(quotesPattern, 0);
             this.statusCode = scanner.nextInt();
-            this.responseSize = scanner.nextInt();
+            if (scanner.hasNextInt()) {
+                this.responseSize = scanner.nextInt();
+            } else { // If response size is 0, the log info is '-'
+                this.responseSize = 0;
+                scanner.next();
+            }
             this.refererHeader = scanner.findWithinHorizon(quotesPattern, 0);
             this.userAgent = scanner.findWithinHorizon(quotesPattern, 0);
         } catch (Exception e) {
-            throw new Exception("Request: Wrong log string format, expected \"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"\", but received " + rawLogString);
+            System.out.println(
+                "Request: Wrong log format: " + this.rawLog + "\n" +
+                " expected \"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"\"" + "\n Error: " +
+                e + "\n"
+            );
         }
+    }
+
+    public String getClientIP() {
+        return this.clientIP;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Client IP: " + this.clientIP);
-        sb.append("\nIdentity: " + this.identity);
-        sb.append("\nUsername: " + this.username);
-        sb.append("\nTimestamp: " + this.timestamp);
-        sb.append("\nRequest: " + this.requestLine);
-        sb.append("\nStatus code: " + this.statusCode);
-        sb.append("\nResponse size: " + this.responseSize);
-        sb.append("\nReferer: " + this.refererHeader);
-        sb.append("\nUser-agent: " + this.userAgent);
+        sb.append(", Identity: " + this.identity);
+        sb.append(", Username: " + this.username);
+        sb.append(", Timestamp: " + this.timestamp);
+        sb.append(", Request: " + this.requestLine);
+        sb.append(", Status code: " + this.statusCode);
+        sb.append(", Response size: " + this.responseSize);
+        sb.append(", Referer: " + this.refererHeader);
+        sb.append(", User-agent: " + this.userAgent);
         return sb.toString();
     }
 } 
