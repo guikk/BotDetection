@@ -1,6 +1,9 @@
 # BotDetection
 Simple bot detection project made in Java.
 
+[📝**Notes about the subject**](Notes.md)
+[📓**Implementation Journal**](Journal.md)
+
 ## Data Source
 Apache's access log at http://www.almhuette-raith.at/apache-log/access.log
 
